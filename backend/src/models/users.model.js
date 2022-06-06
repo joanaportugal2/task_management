@@ -5,16 +5,24 @@ module.exports = (mongoose) => {
         type: String,
         required: [true, "Please provide a username!"],
         unique: true,
-        validate: {
-          validator: function (v) {
-            return /^[a-zA-Z0-9\_]+$/.test(v); // valid only a-z, A-Z, 0-9 and _ characters
+        validate: [
+          {
+            validator: function (v) {
+              return /^[a-zA-Z0-9\_]+$/.test(v); // valid only a-z, A-Z, 0-9 and _ characters
+            },
+            message: (props) => `${props.value} is not a valid username!`,
           },
-          message: (props) => `${props.value} is not a valid username!`,
-        },
+          {
+            validator: function (v) {
+              return v.length >= 4 && v.length <= 16;
+            },
+            message: "Username should have between 4 and 16 characters",
+          },
+        ],
       },
       password: {
         type: String,
-        required: true,
+        required: [true, "Please provide a password!"],
       },
       email: {
         type: String,
@@ -43,6 +51,7 @@ module.exports = (mongoose) => {
     },
     { timestamps: false, versionKey: false }
   );
+
   const User = mongoose.model("users", schema);
   return User;
 };

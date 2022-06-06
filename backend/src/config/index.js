@@ -1,3 +1,4 @@
+require("dotenv").config();
 const config = {
   SECRET: process.env.SECRET,
   USER: process.env.DB_USER,
