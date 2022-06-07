@@ -1,4 +1,4 @@
-const db = require("../../modelsels");
+const db = require("../../models");
 const User = db.users;
 
 // CRUD operations

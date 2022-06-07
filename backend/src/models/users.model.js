@@ -16,7 +16,7 @@ module.exports = (mongoose) => {
             validator: function (v) {
               return v.length >= 4 && v.length <= 16;
             },
-            message: "Username should have between 4 and 16 characters",
+            message: "Username should have between 4 and 16 characters!",
           },
         ],
       },

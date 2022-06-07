@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/index",
-    "testDB": "jest --verbose ./src/__tests__/db"
+    "testDB": "jest --verbose ./src/__tests__/db",
+    "testAPI": "jest --verbose ./src/__tests__/api"
   },
   "keywords": [],
   "author": "",

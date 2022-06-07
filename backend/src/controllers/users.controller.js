@@ -7,7 +7,7 @@ const User = db.users;
 const isPasswordValid = (password) => {
   return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$/.test(password)
     ? ""
-    : "Your password must be 8-20 characters long, at least one uppercase letter, one lowercase letter and one number";
+    : "Your password must be 8-20 characters long, at least one uppercase letter, one lowercase letter and one number.";
 };
 
 exports.create = async (req, res) => {
@@ -36,6 +36,18 @@ exports.create = async (req, res) => {
       message: `User ${userInstance.username} created!`,
     });
   } catch (err) {
+    if (err.name === "MongoServerError" && err.code === 11000) {
+      return res.status(422).json({
+        success: false,
+        error: `The username ${req.body.username} or email ${req.body.email} are already in use!`,
+      });
+    } else if (err.name === "ValidationError") {
+      let errors = [];
+      Object.keys(err.errors).forEach((key) => {
+        errors.push(err.errors[key].message);
+      });
+      return res.status(400).json({ success: false, error: errors });
+    }
     return res.status(500).json({
       success: false,
       error: err.message || "Some error occurred while creating account.",
@@ -130,7 +142,7 @@ exports.resetPassword = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       success: false,
-      error: err.message || "Some error occurred while creating the user.",
+      error: err.message || "Some error occurred while resetting the password.",
     });
   }
 };

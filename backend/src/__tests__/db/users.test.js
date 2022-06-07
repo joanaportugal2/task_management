@@ -1,4 +1,4 @@
-const dbUsers = require("../../__calls__/db/usersers");
+const dbUsers = require("../../__calls__/db/users");
 const TIMEOUT = 7000;
 
 const user = {
@@ -63,7 +63,7 @@ describe("create one user", () => {
       });
       expect(result.name).toBe("ValidationError");
       expect(result.errors.username.message).toBe(
-        "Username should have between 4 and 16 characters"
+        "Username should have between 4 and 16 characters!"
       );
     },
     TIMEOUT
