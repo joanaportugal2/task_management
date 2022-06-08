@@ -6,24 +6,42 @@
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
 
-#app,
-#app > div {
-  margin: 0;
+body {
+  background: #fff;
+  font-family: "Source Sans Pro", sans-serif;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
   padding: 0;
-  min-height: 100vh;
-  background: #f6f7eb;
+  margin: 0;
+}
+
+html,
+body,
+#app,
+.page {
+  height: 100%;
 }
 
 #app * {
-  margin: 0;
   padding: 0;
-  font-family: "Mukta", sans-serif;
+  margin: 0;
+  outline: 0;
+  box-sizing: border-box;
 }
 
 #app h1 {
   font-family: "Bebas Neue", cursive;
   letter-spacing: 0.05rem;
+}
+
+input,
+button {
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+button {
+  cursor: pointer;
 }
 </style>

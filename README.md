@@ -41,4 +41,6 @@ For API tests, you also need to run "dev" script.
 
 ## 	💻 Layout
 
-TBA
+All pages are on 'frontend_screenshots' folder with 2 versions: desktop and mobile.
+
+<img src="./frontend_screenshots/Home_desktop.PNG" alt="Home desktop view" />

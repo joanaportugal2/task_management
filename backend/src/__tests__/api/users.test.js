@@ -19,10 +19,10 @@ const user2 = {
 
 describe("create account", () => {
   test(
-    "200 - account created and user was added on db with encrypted password",
+    "201 - account created and user was added on db with encrypted password",
     async () => {
       const response = await usersAPI.createAccount(user2);
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(201);
       expect(response.data.success).toBeTruthy();
       expect(response.data.message).toBe(`User ${user2.username} created!`);
       const user = await usersDB.readOne(user2.username);
