@@ -11,8 +11,8 @@
     </header>
 
     <main class="d-flex flex-column align-items-center">
-      <h2 class="my-4">Log In</h2>
-      <BForm class="col-8 col-md-4" @submit.prevent="login">
+      <h2 class="my-4">Getting a new password</h2>
+      <BForm class="col-8 col-md-4" @submit.prevent="reset">
         <BFormGroup label="Username" label-for="input-username">
           <BFormInput
             id="input-username"
@@ -23,23 +23,35 @@
             required
           />
         </BFormGroup>
+        <BFormGroup label="Email" label-for="input-email">
+          <BFormInput
+            id="input-email"
+            class="my-1 px-1 border-0 border-bottom"
+            type="email"
+            v-model="form.email"
+            placeholder="Enter email"
+            required
+          />
+        </BFormGroup>
         <BFormGroup label="Password" label-for="input-password">
           <BFormInput
             id="input-password"
             class="my-1 px-1 border-0 border-bottom"
             type="password"
-            v-model="form.password"
+            v-model="form.newPassword"
             placeholder="Enter password"
             required
           />
         </BFormGroup>
         <button class="col-12 px-2 py-1 mt-4 btn btn-danger fw-bold">
-          Log in
+          Set as new password
         </button>
       </BForm>
-      <router-link :to="{ name: 'ResetPassword' }" class="mt-4"
-        >Forgot password? Reset here!</router-link
-      >
+      <div class="mt-4 col-4">
+        <p class="alert alert-success p-1" role="alert" v-if="message">
+          {{ message }}
+        </p>
+      </div>
     </main>
   </div>
 </template>
@@ -51,13 +63,15 @@ import { BForm, BFormGroup, BFormInput } from "bootstrap-vue";
 import { mapActions } from "vuex";
 
 export default {
-  name: "Login",
+  name: "ResetPassword",
   data() {
     return {
       form: {
         username: "",
-        password: "",
+        email: "",
+        newPassword: "",
       },
+      message: "",
     };
   },
   methods: {
@@ -67,10 +81,10 @@ export default {
     goLogin() {
       router.push({ name: "Login" });
     },
-    login() {
-      this.logAccount(this.form).then(() => location.reload());
+    reset() {
+      this.resetPassword(this.form).then((text) => (this.message = text));
     },
-    ...mapActions(["logAccount"]),
+    ...mapActions(["resetPassword"]),
   },
   components: {
     Logo,
@@ -81,8 +95,4 @@ export default {
 };
 </script>
 
-<style scoped>
-a {
-  color: black;
-}
-</style>
+<style scoped></style>

@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Register from "../views/Register.vue";
 import Login from "../views/Login.vue";
+import ResetPassword from "../views/ResetPassword.vue";
 import Landing from "../views/Landing.vue";
 
 import store from "../store";
@@ -30,6 +31,14 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+    meta: {
+      requiresAuth: false,
+    },
+  },
+  {
+    path: "/reset",
+    name: "ResetPassword",
+    component: ResetPassword,
     meta: {
       requiresAuth: false,
     },

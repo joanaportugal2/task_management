@@ -43,7 +43,6 @@
             required
           />
         </BFormGroup>
-
         <BFormGroup label="Password" label-for="input-password">
           <div class="d-flex align-items-center">
             <b-input-group-prepend is-text @click="changeVisibilityPassword">
@@ -107,14 +106,6 @@ import { mapActions } from "vuex";
 
 export default {
   name: "Register",
-  components: {
-    Logo,
-    BForm,
-    BFormGroup,
-    BFormInput,
-    BIconEye,
-    BIconEyeSlash,
-  },
   data() {
     return {
       form: {
@@ -155,24 +146,21 @@ export default {
       } else {
         this.message = "";
         this.error = "";
-        this.registerAccount(this.form)
-          .then((text) => {
-            this.message = text;
-            this.logAccount(this.form)
-              .then(() => location.reload())
-              .catch((text) => (this.error = text));
-            this.form = {
-              username: "",
-              name: "",
-              email: "",
-              password: "",
-              confPassword: "",
-            };
-          })
-          .catch((text) => (this.error = text));
+        this.registerAccount(this.form).then((text) => {
+          this.message = text;
+          this.logAccount(this.form).then(() => location.reload());
+        });
       }
     },
     ...mapActions(["registerAccount", "logAccount"]),
+  },
+  components: {
+    Logo,
+    BForm,
+    BFormGroup,
+    BFormInput,
+    BIconEye,
+    BIconEyeSlash,
   },
 };
 </script>
