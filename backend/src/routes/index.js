@@ -21,6 +21,10 @@ router.use((req, res, next) => {
 router.route("/users").post(usersController.create);
 router.route("/users/login").post(usersController.login);
 router.route("/users/reset").patch(usersController.resetPassword);
+router
+  .route("/users/profile")
+  .get(authController.verifyToken, usersController.getProfileData)
+  .patch(authController.verifyToken, usersController.updateProfileData);
 
 router.all("*", function (req, res) {
   res.status(404).json({ message: "What???" });

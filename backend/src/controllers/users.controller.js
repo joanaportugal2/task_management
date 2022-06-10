@@ -147,6 +147,88 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
+exports.getProfileData = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId)
+      .select("-_id -password")
+      .exec();
+    return res.status(200).json({ success: true, user });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      error: err.message || "Some error occurred while getting data.",
+    });
+  }
+};
+
+exports.updateProfileData = async (req, res) => {
+  if (!req.body.avatar && !req.body.password) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Send avatar or password to update!" });
+  }
+  try {
+    const user = await User.findById(req.userId).exec();
+    if (req.body.avatar) {
+      await User.findByIdAndUpdate(
+        req.userId,
+        { avatar: req.body.avatar },
+        {
+          returnOriginal: false, // to return the updated document
+          runValidators: true, // update validators on update command
+          useFindAndModify: false, //remove deprecation warning
+        }
+      ).exec();
+      return res
+        .status(200)
+        .json({ success: true, message: "Avatar updated!" });
+    }
+
+    const passwordError = isPasswordValid(req.body.password);
+    if (passwordError) {
+      return res.status(400).json({
+        success: false,
+        error: passwordError,
+      });
+    }
+
+    const samePassword = bcrypt.compareSync(req.body.password, user.password);
+    if (samePassword) {
+      return res.status(400).json({
+        success: false,
+        error: "You are already using that password!",
+      });
+    }
+
+    const encryptedPw = bcrypt.hashSync(req.body.password, 10);
+    await User.findByIdAndUpdate(
+      req.userId,
+      { password: encryptedPw },
+      {
+        returnOriginal: false, // to return the updated document
+        runValidators: true, // update validators on update command
+        useFindAndModify: false, //remove deprecation warning
+      }
+    ).exec();
+    return res
+      .status(200)
+      .json({ success: true, message: "Password updated!" });
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      let errors = [];
+      Object.keys(err.errors).forEach((key) => {
+        errors.push(err.errors[key].message);
+      });
+      return res.status(400).json({ success: false, error: errors });
+    }
+
+    return res.status(500).json({
+      success: false,
+      error: err.message || "Some error occurred while updating data.",
+    });
+  }
+};
+
 exports.sample = (req, res) => {
   try {
     return res.status(200).json({ success: true, message: "OK" });
