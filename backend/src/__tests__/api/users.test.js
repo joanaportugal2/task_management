@@ -17,6 +17,8 @@ const user2 = {
   name: "Mary Doe",
 };
 
+let USER1_TOKEN = "";
+
 describe("create account", () => {
   test(
     "201 - account created and user was added on db with encrypted password",
@@ -181,6 +183,7 @@ describe("log user", () => {
         username: user1.username,
         password: user1.password,
       });
+      USER1_TOKEN = response.data.authKey;
       expect(response.status).toBe(200);
       expect(response.data.success).toBeTruthy();
       expect(response.data.authKey).toBeTruthy();
@@ -277,7 +280,6 @@ describe("reset password", () => {
         email: user1.email,
         newPassword: "NewPass123",
       });
-      console.log(response);
       expect(response.status).toBe(200);
       expect(response.data.success).toBeTruthy();
       expect(response.data.message).toBe("Password updated!");
@@ -292,7 +294,7 @@ describe("reset password", () => {
       expect(response.status).toBe(400);
       expect(response.data.success).toBeFalsy();
       expect(response.data.error).toBe(
-        "Please provide username, email and newPassword"
+        "Please provide username, email and newPassword!"
       );
     },
     TIMEOUT
@@ -308,7 +310,7 @@ describe("reset password", () => {
       expect(response.status).toBe(400);
       expect(response.data.success).toBeFalsy();
       expect(response.data.error).toBe(
-        "Please provide username, email and newPassword"
+        "Please provide username, email and newPassword!"
       );
     },
     TIMEOUT
@@ -324,7 +326,7 @@ describe("reset password", () => {
       expect(response.status).toBe(400);
       expect(response.data.success).toBeFalsy();
       expect(response.data.error).toBe(
-        "Please provide username, email and newPassword"
+        "Please provide username, email and newPassword!"
       );
     },
     TIMEOUT
@@ -340,7 +342,7 @@ describe("reset password", () => {
       expect(response.status).toBe(400);
       expect(response.data.success).toBeFalsy();
       expect(response.data.error).toBe(
-        "Please provide username, email and newPassword"
+        "Please provide username, email and newPassword!"
       );
     },
     TIMEOUT
@@ -364,6 +366,24 @@ describe("reset password", () => {
   );
 
   test(
+    "400 - same password",
+    async () => {
+      const response = await usersAPI.resetPassword(
+        {
+          username: user1.username,
+          email: user1.email,
+          newPassword: "NewPass123",
+        },
+        USER1_TOKEN
+      );
+      expect(response.status).toBe(400);
+      expect(response.data.success).toBeFalsy();
+      expect(response.data.error).toBe("You are already using that password!");
+    },
+    TIMEOUT
+  );
+
+  test(
     "404 - user not found",
     async () => {
       const response = await usersAPI.resetPassword({
@@ -376,6 +396,134 @@ describe("reset password", () => {
       expect(response.data.error).toBe(
         `User with username someRandomUser and email ${user1.email} not found!`
       );
+    },
+    TIMEOUT
+  );
+});
+
+describe("get profile", () => {
+  test(
+    "200 - user data",
+    async () => {
+      const response = await usersAPI.readProfile(USER1_TOKEN);
+      expect(response.status).toBe(200);
+      expect(response.data.success).toBeTruthy();
+      expect(response.data.user.username).toBe(user1.username);
+      expect(response.data.user.email).toBe(user1.email);
+      expect(response.data.user.name).toBe(user1.name);
+      expect(response.data.user.avatar).toBeTruthy();
+    },
+    TIMEOUT
+  );
+
+  test(
+    "401 - user not logged",
+    async () => {
+      const response = await usersAPI.readProfile();
+      expect(response.status).toBe(401);
+      expect(response.data.success).toBeFalsy();
+      expect(response.data.error).toBe("Unauthorized!");
+    },
+    TIMEOUT
+  );
+});
+
+describe("update profile", () => {
+  test(
+    "200 - updating avatar",
+    async () => {
+      const response = await usersAPI.updateProfile(
+        {
+          avatar:
+            "https://p.kindpng.com/picc/s/105-1055656_account-user-profile-avatar-avatar-user-profile-icon.png",
+        },
+        USER1_TOKEN
+      );
+      expect(response.status).toBe(200);
+      expect(response.data.success).toBeTruthy();
+      expect(response.data.message).toBe("Avatar updated!");
+    },
+    TIMEOUT
+  );
+
+  test(
+    "200 - updating password",
+    async () => {
+      const response = await usersAPI.updateProfile(
+        { password: "Password456" },
+        USER1_TOKEN
+      );
+      expect(response.status).toBe(200);
+      expect(response.data.success).toBeTruthy();
+      expect(response.data.message).toBe("Password updated!");
+    },
+    TIMEOUT
+  );
+
+  test(
+    "400 - missing data",
+    async () => {
+      const response = await usersAPI.updateProfile({}, USER1_TOKEN);
+      expect(response.status).toBe(400);
+      expect(response.data.success).toBeFalsy();
+      expect(response.data.error).toBe("Send avatar or password to update!");
+    },
+    TIMEOUT
+  );
+
+  test(
+    "400 - invalid avatar url",
+    async () => {
+      const response = await usersAPI.updateProfile(
+        { avatar: "www.url.com" },
+        USER1_TOKEN
+      );
+      expect(response.status).toBe(400);
+      expect(response.data.success).toBeFalsy();
+      expect(response.data.error).toContain(
+        `www.url.com is not a valid avatar image!`
+      );
+    },
+    TIMEOUT
+  );
+
+  test(
+    "400 - invalid password",
+    async () => {
+      const response = await usersAPI.updateProfile(
+        { password: "newpassword" },
+        USER1_TOKEN
+      );
+      expect(response.status).toBe(400);
+      expect(response.data.success).toBeFalsy();
+      expect(response.data.error).toContain(
+        `Your password must be 8-20 characters long, at least one uppercase letter, one lowercase letter and one number.`
+      );
+    },
+    TIMEOUT
+  );
+
+  test(
+    "400 - same password",
+    async () => {
+      const response = await usersAPI.updateProfile(
+        { password: "Password456" },
+        USER1_TOKEN
+      );
+      expect(response.status).toBe(400);
+      expect(response.data.success).toBeFalsy();
+      expect(response.data.error).toBe("You are already using that password!");
+    },
+    TIMEOUT
+  );
+
+  test(
+    "401 - user not logged",
+    async () => {
+      const response = await usersAPI.updateProfile();
+      expect(response.status).toBe(401);
+      expect(response.data.success).toBeFalsy();
+      expect(response.data.error).toBe("Unauthorized!");
     },
     TIMEOUT
   );

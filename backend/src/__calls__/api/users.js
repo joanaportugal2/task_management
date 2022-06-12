@@ -28,3 +28,29 @@ exports.resetPassword = async function (data = {}) {
     return error.response;
   }
 };
+
+exports.readProfile = async function (token = "") {
+  try {
+    const response = await api.get("/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+exports.updateProfile = async function (data = {}, token = "") {
+  try {
+    const response = await api.patch("/profile", data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

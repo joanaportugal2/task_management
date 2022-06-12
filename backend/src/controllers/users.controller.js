@@ -101,7 +101,7 @@ exports.resetPassword = async (req, res) => {
   if (!req.body.username || !req.body.email || !req.body.newPassword) {
     return res.status(400).json({
       success: false,
-      error: "Please provide username, email and newPassword",
+      error: "Please provide username, email and newPassword!",
     });
   }
 
@@ -122,6 +122,17 @@ exports.resetPassword = async (req, res) => {
       return res.status(404).json({
         success: false,
         error: `User with username ${req.body.username} and email ${req.body.email} not found!`,
+      });
+    }
+
+    const samePassword = bcrypt.compareSync(
+      req.body.newPassword,
+      userInstance.password
+    );
+    if (samePassword) {
+      return res.status(400).json({
+        success: false,
+        error: "You are already using that password!",
       });
     }
 
@@ -165,7 +176,7 @@ exports.updateProfileData = async (req, res) => {
   if (!req.body.avatar && !req.body.password) {
     return res
       .status(400)
-      .json({ success: false, message: "Send avatar or password to update!" });
+      .json({ success: false, error: "Send avatar or password to update!" });
   }
   try {
     const user = await User.findById(req.userId).exec();
