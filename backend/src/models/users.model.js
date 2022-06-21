@@ -40,7 +40,7 @@ module.exports = (mongoose) => {
       avatar: {
         type: String,
         default:
-          "https://p.kindpng.com/picc/s/105-1055656_account-user-profile-avatar-avatar-user-profile-icon.png",
+          "https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png",
         validate: {
           validator: function (v) {
             return /(http(s?):)([\/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)/.test(v);

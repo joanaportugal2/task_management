@@ -9,14 +9,19 @@ export default new Vuex.Store({
     token: sessionStorage.getItem("appToken")
       ? sessionStorage.getItem("appToken")
       : "",
+    user: {},
   },
   getters: {
     getToken: (state) => state.token,
+    getUserData: (state) => state.user,
   },
   mutations: {
     SET_TOKEN(state, item) {
       state.token = item;
       sessionStorage.setItem("appToken", item);
+    },
+    SET_USER(state, item) {
+      state.user = item;
     },
   },
   actions: {
@@ -43,6 +48,18 @@ export default new Vuex.Store({
         const response = await api.patch("/users/reset", payload);
         if (response.data.success) {
           return response.data.message;
+        }
+      } catch ({ response }) {
+        alert(response.data.error);
+      }
+    },
+    async profileData(context) {
+      try {
+        const response = await api.get("/users/profile", {
+          headers: { Authorization: `Bearer ${this.state.token}` },
+        });
+        if (response.data.success) {
+          context.commit("SET_USER", response.data.user);
         }
       } catch ({ response }) {
         alert(response.data.error);

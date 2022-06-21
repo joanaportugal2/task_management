@@ -239,14 +239,3 @@ exports.updateProfileData = async (req, res) => {
     });
   }
 };
-
-exports.sample = (req, res) => {
-  try {
-    return res.status(200).json({ success: true, message: "OK" });
-  } catch (err) {
-    return res.status(500).json({
-      success: false,
-      error: err.message || "Some error occurred while something.",
-    });
-  }
-};
