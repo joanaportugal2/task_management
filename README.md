@@ -17,8 +17,8 @@ The project was inspired by Rocketseat's 2019 Omnistack Course.
 
 ## 	💻 Features
 
-- [ ] User Authentication: register, login, forgot password
-- [ ] User Profile: see data, edit data (password and avatar)
+- [X] User Authentication: register, login, forgot password
+- [ ] User Profile: see data, edit data (password and avatar), delete account
 - [ ] Activity Categories: create, edit and delete
 - [ ] Activity: create, edit, delete
 - [ ] Activity's Task: create, edit, delete

@@ -65,5 +65,17 @@ export default new Vuex.Store({
         alert(response.data.error);
       }
     },
+    async updateProfile(context, payload) {
+      try {
+        const response = await api.patch("/users/profile", payload, {
+          headers: { Authorization: `Bearer ${this.state.token}` },
+        });
+        if (response.data.success) {
+          return response.data.message;
+        }
+      } catch ({ response }) {
+        alert(response.data.error);
+      }
+    },
   },
 });

@@ -10,7 +10,6 @@
 
 body {
   background: #fff;
-  font-family: "Source Sans Pro", sans-serif;
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
   padding: 0;
@@ -32,8 +31,14 @@ body,
 }
 
 #app h1 {
-  font-family: "Bebas Neue", cursive;
-  letter-spacing: 0.05rem;
+  font-family: "Bebas Neue";
+}
+
+#app p,
+label,
+input,
+button {
+  font-size: 1.2rem;
 }
 
 input,
