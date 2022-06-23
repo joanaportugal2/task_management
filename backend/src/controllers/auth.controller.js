@@ -7,7 +7,7 @@ exports.verifyToken = (req, res, next) => {
   if (typeof header == "undefined")
     return res.status(401).json({
       success: false,
-      message: "Must be authenticated with a token to access this information!",
+      error: "Must be authenticated with a token to access this information!",
     });
   const bearer = header.split(" "); // Authorization: Bearer <token>
   const token = bearer[1];
@@ -16,6 +16,6 @@ exports.verifyToken = (req, res, next) => {
     req.userId = decoded.userId;
     next();
   } catch (err) {
-    return res.status(401).json({ success: false, message: "Unauthorized!" });
+    return res.status(401).json({ success: false, error: "Unauthorized!" });
   }
 };

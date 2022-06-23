@@ -4,16 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/index"
+    "dev": "nodemon ./src/index",
+    "testDB": "jest --verbose ./src/__tests__/db",
+    "testAPI": "jest --verbose ./src/__tests__/api"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.3"
   },

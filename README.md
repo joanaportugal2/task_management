@@ -5,7 +5,8 @@
 ## 	💻 Technologies
 
 This project was made using:
-- Backend: Node, Express, Mongoose, Bcryptjs, JWT
+- Backend: Node, Express, Mongoose, Bcryptjs, JWT, Jest & Axios (testing)
+- Frontend: Vue, Bootstrap, Axios
 
 ## 	💻 Project
 
@@ -16,8 +17,8 @@ The project was inspired by Rocketseat's 2019 Omnistack Course.
 
 ## 	💻 Features
 
-- [ ] User Authentication: register, login, forgot password
-- [ ] User Profile: see data, edit data (password and avatar)
+- [X] User Authentication: register, login, forgot password
+- [X] User Profile: see data, edit data (password and avatar)
 - [ ] Activity Categories: create, edit and delete
 - [ ] Activity: create, edit, delete
 - [ ] Activity's Task: create, edit, delete
@@ -30,8 +31,16 @@ The project was inspired by Rocketseat's 2019 Omnistack Course.
 
 ## 	💻 API Documentation
 
-REST API routes and response examples are documented in this [Postman URL](TBA).
+REST API routes and response examples are documented in this Postman URL(TBA).
+
+## 	💻 API Testing
+
+Database and API testing are separated on different package scripts to avoid interfering with one another.
+To run both you need to have your own .env file.
+For API tests, you also need to run "dev" script.
 
 ## 	💻 Layout
 
-TBA
+All pages are on 'frontend_screenshots' folder with 2 versions: desktop and mobile.
+
+<img src="./frontend_screenshots/Home_desktop.PNG" alt="Home desktop view" />
